@@ -3,7 +3,7 @@ name: "legal-repository-opinions"
 description: "Opinionated defaults and standards for repositories of operative legal and business documents: operating and partnership agreements, asset assignments, amendments, member exits, dissolutions, contracts, and negotiation and review notes. Covers repository structure, document grouping, lifecycle and which version controls, file and version naming, drafting anatomy (articles, recitals, definitions, boilerplate, defined terms, signature blocks, e-signature placeholders), protection review, and export-to-signing discipline. Use when creating, organizing, naming, drafting, redlining, reviewing, auditing, or archiving legal or contract documents in a repository, or when deciding which executed version is in force."
 metadata:
   author: "Leeor Nahum"
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Legal Repository Opinions
@@ -59,7 +59,7 @@ Create a folder when it holds a real document. Do not pre-create empty buckets o
 - Operative documents are export-and-sign artifacts. Do not put YAML frontmatter, agent notes, version tags, or process labels inside an agreement body; they leak into the exported, printed, or signed copy.
 - Carry version metadata on the folder and in the repo's durable record (`AGENTS.md` or `README`), not in the document.
 - Operative documents carry no frontmatter. Their version and status live on the folder, never in the file.
-- `Notes/` files are internal working material. Keep them in topic subfolders, never loose at the `Notes/` root, and give each one YAML frontmatter: `name` (Title Case), `description` (one line), `date_created`, and `date_modified` (`YYYY-MM-DD`). Keep `date_created` fixed and bump `date_modified` when the content changes; if a note is missing frontmatter, add it, reading the dates from git or the filesystem.
+- `Notes/` files are internal working material. Organize them in topic folders by matter, never loose at the `Notes/` root, and group related materials together: a transcript and the screenshot or recording it came from belong in one folder, not scattered next to unrelated notes. Give each markdown note YAML frontmatter: `name` (Title Case), `description` (one line), `date_created`, and `date_modified` (`YYYY-MM-DD`). Keep `date_created` fixed and bump `date_modified` when the content changes; if a note is missing frontmatter, add it, reading the dates from git or the filesystem. Move superseded notes to `Notes/Archive/`.
 - Internal strategy, the reasons behind a deal, negotiation playbooks, and enforceability reasoning live only in `Notes/`, clearly marked as internal and never shared with another party. Keep them out of any document or note that could be sent.
 
 ## Document Anatomy
