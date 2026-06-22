@@ -3,7 +3,7 @@ name: "legal-repository-opinions"
 description: "Opinionated defaults and standards for repositories of operative legal and business documents: operating and partnership agreements, asset assignments, amendments, member exits, dissolutions, contracts, and negotiation and review notes. Covers repository structure, document grouping, lifecycle and which version controls, file and version naming, drafting anatomy (articles, recitals, definitions, boilerplate, defined terms, signature blocks, e-signature placeholders), protection review, and export-to-signing discipline. Use when creating, organizing, naming, drafting, redlining, reviewing, auditing, or archiving legal or contract documents in a repository, or when deciding which executed version is in force."
 metadata:
   author: "Leeor Nahum"
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Legal Repository Opinions
@@ -18,20 +18,24 @@ These are opinionated defaults, not a jurisdiction-specific form. Apply what fit
 <legal-repo>/
 ├── AGENTS.md           # this repo's specifics: parties, status, which version controls
 ├── README.md           # human-facing purpose, parties, and current status
-├── Active/             # work toward the next execution, grouped by set
-│   └── <Set>/
-│       └── <Entity> <Document> <YYYY-MM-DD> (Draft).md
+├── Active/             # work toward the next execution
+│   └── <Matter> <YYYY-MM-DD> (Draft)/      # the version lives on the folder
+│       └── <Document Title>.md             # clean title, no date or status
 ├── Executed/           # signed, immutable, dated baselines; the latest set is in force
-│   └── <Entity> <YYYY-MM-DD> Baseline/
-│       ├── <Entity> <Document> <YYYY-MM-DD> (Executed).md
-│       └── <Entity> <Document> <YYYY-MM-DD> (Executed).md
+│   └── <Matter> <YYYY-MM-DD> Baseline/
+│       ├── <Document Title>.md
+│       └── <Document Title>.md
 ├── Archive/
 │   ├── Superseded Drafts/      # drafts that were never executed
-│   └── Legacy and Reference/   # older versions, source templates, reference agreements
-└── Notes/              # negotiation notes, redline summaries, checklists, talking points
+│   │   └── <Matter> <YYYY-MM-DD> (Superseded)/
+│   │       └── <Document Title>.md
+│   └── Legacy and Reference/   # older versions, source and reference agreements
+└── Notes/              # internal working material, in topic folders, with frontmatter
+    └── <Topic>/
+        └── <Note Title>.md
 ```
 
-Group related documents into a subfolder within each state folder rather than leaving files loose at its top. A set is the documents drafted, executed, or superseded together, such as an operating agreement and the asset assignment signed with it. Name the set folder for what unites it: the execution date for a signed baseline, or the matter for a draft set. A single standalone document may sit directly in the state folder.
+Every operative document lives in its own dated folder; never leave one loose in a state folder. The folder carries the version, named `<Matter> <YYYY-MM-DD> (<Status>)`, and the document file inside keeps its clean title only, with no date or status. One folder can hold a set drafted, executed, or superseded together (an operating agreement and the asset assignment signed with it), in which case the folder is the set and each file is one document. Putting the version and status on the folder keeps the document's own filename clean for export and signing, the same reason metadata stays out of the document.
 
 Create a folder when it holds a real document. Do not pre-create empty buckets or add placeholder files to keep them in Git. This skill supplies the rules. A repository's specifics, its parties, current status, and which version controls, live in that repository's own `AGENTS.md` or `README`, written for the matter. Do not assume a repository already has one, and do not seed a generic one.
 
@@ -45,16 +49,17 @@ Create a folder when it holds a real document. Do not pre-create empty buckets o
 ## Naming
 
 - Use ISO dates, `YYYY-MM-DD`, in every filename. They sort chronologically and never read ambiguously across regions. Do not use `M.D.YYYY` or written-out months.
-- Shape: `<Entity> <Document Type> <YYYY-MM-DD> [(<Status>)].md`. The date is that version's date, the draft date or the execution date, not today's date.
-- Status markers are a closed set, each mapping to one lifecycle point: `(Draft)` early working text, `(Redline)` a marked-up comparison against the controlling version, `(Unsigned)` final text circulated for signature, `(Executed)` signed and in force, `(Superseded)` replaced by a later version. The version date plus a marker replaces free-text version words. Do not name files `Final`, `Revised`, or `Re-Revised`; those do not scale and stop being true the moment the next version exists.
+- The version lives on the folder: `<Matter or Set> <YYYY-MM-DD> (<Status>)/`. The document file inside is named by its title only, `<Document Title>.md`, with no date or status. The date is that version's date, the draft or execution date, not today's date.
+- Status markers are a closed set, each mapping to one lifecycle point: `(Draft)` early working text, `(Redline)` a marked-up comparison against the controlling version, `(Unsigned)` final text circulated for signature, `(Executed)` signed and in force, `(Superseded)` replaced by a later version. A signed baseline folder may use `Baseline` in place of `(Executed)`. The folder date plus a marker replaces free-text version words. Do not name a folder `Final`, `Revised`, or `Re-Revised`; those do not scale and stop being true the moment the next version exists.
 - Title Case for folder names and document filenames.
 - One matter or entity per repository by default. If a repository holds more than one, lead each filename with the entity so files group correctly.
 
 ## Keep Metadata Out Of The Document Body
 
 - Operative documents are export-and-sign artifacts. Do not put YAML frontmatter, agent notes, version tags, or process labels inside an agreement body; they leak into the exported, printed, or signed copy.
-- Carry version metadata in the filename and in the repo's durable record (`AGENTS.md` or `README`), not in the document.
-- `Notes/` files are internal working material and may carry frontmatter. Operative documents may not.
+- Carry version metadata on the folder and in the repo's durable record (`AGENTS.md` or `README`), not in the document.
+- Operative documents carry no frontmatter. Their version and status live on the folder, never in the file.
+- `Notes/` files are internal working material. Keep them in topic subfolders, never loose at the `Notes/` root, and give each one YAML frontmatter: `name` (Title Case), `description` (one line), `date_created`, and `date_modified` (`YYYY-MM-DD`). Keep `date_created` fixed and bump `date_modified` when the content changes; if a note is missing frontmatter, add it, reading the dates from git or the filesystem.
 - Internal strategy, the reasons behind a deal, negotiation playbooks, and enforceability reasoning live only in `Notes/`, clearly marked as internal and never shared with another party. Keep them out of any document or note that could be sent.
 
 ## Document Anatomy
@@ -107,9 +112,8 @@ When a party leaves, an entity dissolves, or an agreement is unwound:
 
 - An executed document is immutable; change terms by drafting the next version, never by editing the signed file.
 - Which executed version controls is recorded in a durable repo file (`AGENTS.md` or `README`), not inferred from folder placement.
-- ISO `YYYY-MM-DD` dates and the closed status-marker set in every filename; no `Final`, `Revised`, or `Re-Revised`.
-- Related documents are grouped into set subfolders within each state folder, not left loose.
-- No agent metadata, frontmatter, or process labels inside an operative document body.
+- Every operative document lives in its own dated folder, with the version and status on the folder and a clean, date-free filename; no `Final`, `Revised`, or `Re-Revised`.
+- Operative document bodies carry no frontmatter or process labels; `Notes/` live in topic folders and carry `name`, `description`, `date_created`, and `date_modified` frontmatter.
 - Every term and party is defined once and labeled consistently; `shall` obligates and `may` permits; unknown values are explicit placeholders.
 - Reviews run against the controlling baseline and flag every undiscussed change.
 - Asset and IP divisions are grounded in records, not assertions; a party claims only what the records substantiate.
@@ -119,8 +123,8 @@ When a party leaves, an entity dissolves, or an agreement is unwound:
 When invoked to audit a legal repository, walk it and confirm each convention above holds, reporting by document and category:
 
 1. The controlling executed version is named in a durable repo file (`AGENTS.md` or `README`), not left to inference.
-2. Executed files are immutable and dated, drafts and superseded material are separated into `Active/` and `Archive/`, and related documents are grouped into set subfolders rather than left loose.
-3. Filenames follow the naming rule, and no operative document body carries frontmatter or process labels.
+2. Executed files are immutable, every operative document sits in its own dated folder with a clean filename, and drafts and superseded material are separated into `Active/` and `Archive/`.
+3. Folders follow the naming rule, no operative document body carries frontmatter, and every note in `Notes/` carries the required frontmatter inside a topic folder.
 4. Each agreement has the expected anatomy, consistent defined terms, resolvable cross-references, and complete, e-signature-ready signature blocks.
 5. The active draft, diffed against the controlling baseline, surfaces every undiscussed substantive change.
 6. Exports are tracked to their source file and have not diverged.
