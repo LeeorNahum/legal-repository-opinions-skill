@@ -3,14 +3,14 @@ name: "legal-repository-opinions"
 description: "Opinionated defaults and standards for repositories of operative legal and business documents: operating and partnership agreements, asset assignments, amendments, member exits, dissolutions, contracts, and negotiation and review notes. Covers repository structure, document grouping, lifecycle and which version controls, file and version naming, drafting anatomy (articles, recitals, definitions, boilerplate, defined terms, signature blocks, e-signature placeholders), protection review, and export-to-signing discipline. Use when creating, organizing, naming, drafting, redlining, reviewing, auditing, or archiving legal or contract documents in a repository, or when deciding which executed version is in force."
 metadata:
   author: "Leeor Nahum"
-  version: "1.2.0"
+  version: "1.2.1"
 ---
 
 # Legal Repository Opinions
 
 A legal repository is more than a folder of documents. The real artifacts are operative instruments, and what matters about each one is the same set of facts: who the parties are, which version is executed, which version is in force, and what every other file is relative to it. Keep those facts explicit so a draft is never mistaken for a signed agreement, and a superseded version is never mistaken for the one that controls.
 
-These are opinionated defaults, not a jurisdiction-specific form. Apply what fits the matter; the structure, naming, and review discipline are the point, and the specific clauses are yours.
+These are opinionated defaults, not a jurisdiction-specific form. Apply what fits the matter. The structure, naming, and review discipline are the point, and the specific clauses are yours.
 
 ## Repo Shape
 
@@ -35,7 +35,7 @@ These are opinionated defaults, not a jurisdiction-specific form. Apply what fit
         └── <Note Title>.md
 ```
 
-Every operative document lives in its own dated folder; never leave one loose in a state folder. The folder carries the version, named `<Matter> <YYYY-MM-DD> (<Status>)`, and the document file inside keeps its clean title only, with no date or status. One folder can hold a set drafted, executed, or superseded together (an operating agreement and the asset assignment signed with it), in which case the folder is the set and each file is one document. Putting the version and status on the folder keeps the document's own filename clean for export and signing, the same reason metadata stays out of the document.
+Every operative document lives in its own dated folder. Never leave one loose in a state folder. The folder carries the version, named `<Matter> <YYYY-MM-DD> (<Status>)`, and the document file inside keeps its clean title only, with no date or status. One folder can hold a set drafted, executed, or superseded together (an operating agreement and the asset assignment signed with it), in which case the folder is the set and each file is one document. Putting the version and status on the folder keeps the document's own filename clean for export and signing, the same reason metadata stays out of the document.
 
 Create a folder when it holds a real document. Do not pre-create empty buckets or add placeholder files to keep them in Git. This skill supplies the rules. A repository's specifics, its parties, current status, and which version controls, live in that repository's own `AGENTS.md` or `README`, written for the matter. Do not assume a repository already has one, and do not seed a generic one.
 
@@ -44,22 +44,22 @@ Create a folder when it holds a real document. Do not pre-create empty buckets o
 - A document moves forward by version: draft, redline, executed, superseded. It never moves forward by editing an executed file in place.
 - An executed document is immutable. To change executed terms, draft the next version in `Active/`, either a new dated document or an amendment, execute it, then move it to `Executed/`.
 - Which version controls is a fact you record, not one you infer from folder placement. Name the controlling executed document and its date in a durable repo file, its `AGENTS.md` or `README`, because "the newest file in `Executed/`" is not safe to assume during a transition with several documents in flight.
-- An amendment modifies the base agreement; it does not replace it. Keep both in `Executed/` and note in that same record that the base reads subject to the amendment.
+- An amendment modifies the base agreement. It does not replace it. Keep both in `Executed/` and note in that same record that the base reads subject to the amendment.
 
 ## Naming
 
 - Use ISO dates, `YYYY-MM-DD`, in every filename. They sort chronologically and never read ambiguously across regions. Do not use `M.D.YYYY` or written-out months.
 - The version lives on the folder: `<Matter or Set> <YYYY-MM-DD> (<Status>)/`. The document file inside is named by its title only, `<Document Title>.md`, with no date or status. The date is that version's date, the draft or execution date, not today's date.
-- Status markers are a closed set, each mapping to one lifecycle point: `(Draft)` early working text, `(Redline)` a marked-up comparison against the controlling version, `(Unsigned)` final text circulated for signature, `(Executed)` signed and in force, `(Superseded)` replaced by a later version. A signed baseline folder may use `Baseline` in place of `(Executed)`. The folder date plus a marker replaces free-text version words. Do not name a folder `Final`, `Revised`, or `Re-Revised`; those do not scale and stop being true the moment the next version exists.
+- Status markers are a closed set, each mapping to one lifecycle point: `(Draft)` early working text, `(Redline)` a marked-up comparison against the controlling version, `(Unsigned)` final text circulated for signature, `(Executed)` signed and in force, `(Superseded)` replaced by a later version. A signed baseline folder may use `Baseline` in place of `(Executed)`. The folder date plus a marker replaces free-text version words. Do not name a folder `Final`, `Revised`, or `Re-Revised`. Those do not scale and stop being true the moment the next version exists.
 - Title Case for folder names and document filenames.
 - One matter or entity per repository by default. If a repository holds more than one, lead each filename with the entity so files group correctly.
 
 ## Keep Metadata Out Of The Document Body
 
-- Operative documents are export-and-sign artifacts. Do not put YAML frontmatter, agent notes, version tags, or process labels inside an agreement body; they leak into the exported, printed, or signed copy.
+- Operative documents are export-and-sign artifacts. Do not put YAML frontmatter, agent notes, version tags, or process labels inside an agreement body. They leak into the exported, printed, or signed copy.
 - Carry version metadata on the folder and in the repo's durable record (`AGENTS.md` or `README`), not in the document.
 - Operative documents carry no frontmatter. Their version and status live on the folder, never in the file.
-- `Notes/` files are internal working material. Organize them in topic folders by matter, never loose at the `Notes/` root, and group related materials together: a transcript and the screenshot or recording it came from belong in one folder, not scattered next to unrelated notes. Give each markdown note YAML frontmatter: `name` (Title Case), `description` (one line), `date_created`, and `date_modified` (`YYYY-MM-DD`). Keep `date_created` fixed and bump `date_modified` when the content changes; if a note is missing frontmatter, add it, reading the dates from git or the filesystem. Move superseded notes to `Notes/Archive/`.
+- `Notes/` files are internal working material. Organize them in topic folders by matter, never loose at the `Notes/` root, and group related materials together: a transcript and the screenshot or recording it came from belong in one folder, not scattered next to unrelated notes. Give each markdown note YAML frontmatter: `name` (Title Case), `description` (one line), `date_created`, and `date_modified` (`YYYY-MM-DD`). Keep `date_created` fixed and bump `date_modified` when the content changes. If a note is missing frontmatter, add it, reading the dates from git or the filesystem. Move superseded notes to `Notes/Archive/`.
 - Internal strategy, the reasons behind a deal, negotiation playbooks, and enforceability reasoning live only in `Notes/`, clearly marked as internal and never shared with another party. Keep them out of any document or note that could be sent.
 
 ## Document Anatomy
@@ -70,8 +70,8 @@ For agreements and similar instruments, hold to these:
 - The boilerplate set: Governing Law, Amendment, Severability, Notices, Counterparts, Binding Effect, Entire Agreement, and dispute resolution. Flag any that is missing.
 - Order each signature block as the printed name, then a blank line for the signature, then a date line, and ideally an email line, so an e-signature tool can map a field to each in turn.
 - Define each party and term once, capitalize defined terms, and use one consistent label afterward; never an ambiguous pronoun where a party label belongs. Keep every section cross-reference correct after renumbering.
-- A capitalized word reads as a defined term: define it on first use or do not capitalize it. Do not rely on a superseded or terminated agreement for a definition; carry any needed definition into the new document.
-- `shall` obligates, `may` permits, `will` states a future fact; do not mix them loosely.
+- A capitalized word reads as a defined term: define it on first use or do not capitalize it. Do not rely on a superseded or terminated agreement for a definition. Carry any needed definition into the new document.
+- `shall` obligates, `may` permits, `will` states a future fact. Do not mix them loosely.
 - Explicit placeholders for the effective date and any unknown dates, addresses, or amounts, written so they cannot be missed at signing.
 - For fields an e-signature tool will fill, the signatures and the signed dates, leave a bare blank the tool can replace, with no pre-filled month or year, so it can place its field cleanly.
 - Use heading levels for the document hierarchy (title, party block, articles, sections), not bold text, so the markdown stays valid and converts cleanly.
@@ -87,7 +87,7 @@ When reviewing a document, work against the controlling executed baseline, not a
 4. Flag common gaps: undefined financial triggers such as break-even, caps, or "net"; missing boilerplate; vague contribution or termination standards; control that can override a minority party on everything; and IP whose ownership or reversion is unclear.
 5. Separate operational control from economic interest where they legitimately diverge, and say so plainly rather than letting a reader assume they track each other.
 6. Ground every asset and IP division in records, receipts, repositories, purchase logs, or commit history, not assertions. A party claims only what the records substantiate, and does not reach for what another party paid for or built.
-7. Prefer concrete, bounded terms over vague ones. A restriction with an undefined standard, or an open-ended "similar" or "related" scope, invites future disputes and is hard to enforce; pin it to specific, checkable boundaries or cut it.
+7. Prefer concrete, bounded terms over vague ones. A restriction with an undefined standard, or an open-ended "similar" or "related" scope, invites future disputes and is hard to enforce. Pin it to specific, checkable boundaries or cut it.
 
 Keep advice in plain language, propose specific replacement wording rather than only naming a concern, and recommend a licensed attorney for anything consequential. When a transcript or discussion records what the parties said, draft to what they actually need and are entitled to, not a verbatim memorialization of everything said, some of which may be careless or against a party's interest.
 
@@ -101,7 +101,7 @@ Keep advice in plain language, propose specific replacement wording rather than 
 
 When a party leaves, an entity dissolves, or an agreement is unwound:
 
-- Read the controlling agreement first and surface every right and protection the represented party already holds, such as continuation or buyout rights, payouts on dissolution, and notice or cure periods. Do not let a party waive a right without knowing it; flag each one being given up.
+- Read the controlling agreement first and surface every right and protection the represented party already holds, such as continuation or buyout rights, payouts on dissolution, and notice or cure periods. Do not let a party waive a right without knowing it. Flag each one being given up.
 - Settle money and assets explicitly. Confirm the represented party owes nothing and is owed nothing, or state exactly what remains.
 - Close with a full mutual release of claims under every prior agreement, and terminate those agreements so no obligation silently survives. A single general termination is cleaner, and draws less attention, than enumerating each removed restriction.
 - Keep the operative document neutral. The reasons for the split stay out of it and live only in internal notes.
@@ -110,13 +110,13 @@ When a party leaves, an entity dissolves, or an agreement is unwound:
 
 ## Core Non-Negotiables
 
-- An executed document is immutable; change terms by drafting the next version, never by editing the signed file.
+- An executed document is immutable. Change terms by drafting the next version, never by editing the signed file.
 - Which executed version controls is recorded in a durable repo file (`AGENTS.md` or `README`), not inferred from folder placement.
 - Every operative document lives in its own dated folder, with the version and status on the folder and a clean, date-free filename; no `Final`, `Revised`, or `Re-Revised`.
-- Operative document bodies carry no frontmatter or process labels; `Notes/` live in topic folders and carry `name`, `description`, `date_created`, and `date_modified` frontmatter.
-- Every term and party is defined once and labeled consistently; `shall` obligates and `may` permits; unknown values are explicit placeholders.
+- Operative document bodies carry no frontmatter or process labels. `Notes/` live in topic folders and carry `name`, `description`, `date_created`, and `date_modified` frontmatter.
+- Every term and party is defined once and labeled consistently. `shall` obligates and `may` permits. Unknown values are explicit placeholders.
 - Reviews run against the controlling baseline and flag every undiscussed change.
-- Asset and IP divisions are grounded in records, not assertions; a party claims only what the records substantiate.
+- Asset and IP divisions are grounded in records, not assertions. A party claims only what the records substantiate.
 
 ## Legal Repository Audit
 

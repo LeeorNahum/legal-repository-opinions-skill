@@ -6,7 +6,7 @@ It covers the document lifecycle (draft to executed to superseded), which versio
 
 These are conventions, not legal advice, and not a substitute for a licensed attorney.
 
-The skill is the rules. A repository's own `AGENTS.md` holds that repo's specifics (parties, status, which version controls); the skill neither ships nor assumes one.
+The skill is the rules. A repository's own `AGENTS.md` holds that repo's specifics (parties, status, which version controls). The skill neither ships nor assumes one.
 
 ## Files
 
