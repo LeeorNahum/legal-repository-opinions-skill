@@ -708,8 +708,8 @@ pre, code { font-family: Consolas, Menlo, "DejaVu Sans Mono", monospace; font-si
 pre { white-space: pre-wrap; margin: 0 0 8pt; }
 .blank { display: inline-block; border-bottom: 0.6pt solid #000; max-width: 100%; }
 .sigpage, .sigblock { break-inside: avoid; }
-.sigblock { margin: 0 0 18pt; }
-.signer { margin: 12pt 0 4pt; }
+.sigblock { margin: 0 0 30pt; }
+.signer { margin: 26pt 0 4pt; }
 .sigline { margin: 0; padding-top: 15pt; }
 /* The first line under a signer is the one signed, so it gets room for an e-signature field. */
 .signer + .sigline, .sigblock > .sigline:first-child { padding-top: 34pt; }
