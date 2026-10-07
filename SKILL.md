@@ -1,9 +1,10 @@
 ---
 name: "legal-repository-opinions"
-description: "Use when creating, drafting, redlining, reviewing, organizing, naming, auditing, or archiving legal or contract documents in a repository, such as operating and partnership agreements, asset assignments, amendments, member exits, dissolutions, contracts, and negotiation and review notes, or when deciding which executed version is in force. Opinionated defaults and standards for repositories of operative legal and business documents."
+description: "Use when creating, drafting, redlining, reviewing, exporting, signing, organizing, naming, auditing, or archiving legal or contract documents in a repository, such as operating and partnership agreements, asset assignments, amendments, member exits, dissolutions, and contracts, or when deciding which executed version is in force. Opinionated defaults and standards for repositories of operative legal and business documents."
+compatibility: "The bundled export script requires Node.js 18.3 or later and an installed Chrome, Edge, or Chromium at version 131 or later."
 metadata:
   author: "Leeor Nahum"
-  version: "1.3.0"
+  version: "2.0.0"
 ---
 
 # Legal Repository Opinions
@@ -18,24 +19,20 @@ These are opinionated defaults, not a jurisdiction-specific form. Apply what fit
 <legal-repo>/
 ├── AGENTS.md           # this repo's specifics: parties, status, which version controls
 ├── README.md           # human-facing purpose, linking to AGENTS.md for status
-├── Inbox/              # received drafts, transcripts, and scans, waiting to be filed
+├── Inbox/              # drafts and signed copies received from another party, waiting to be filed
 ├── Active/             # work toward the next execution
 │   └── <Matter> <YYYY-MM-DD> (Draft)/      # the version lives on the folder
 │       └── <Document Title>.md             # clean title, no date or status
 ├── Executed/           # signed, immutable, dated baselines
 │   └── <Matter> <YYYY-MM-DD> Baseline/
 │       ├── <Document Title>.md
-│       └── <Document Title>.md
-├── Archive/
-│   ├── Superseded Drafts/      # drafts that were never executed
-│   │   └── <Matter> <YYYY-MM-DD> (Superseded)/
-│   │       └── <Document Title>.md
-│   ├── Legacy and Reference/   # older versions, source and reference agreements
-│   └── Notes/                  # retired notes and older log entries
-└── Notes/              # internal working material, in topic folders, with frontmatter
-    ├── AGENTS.md       # generated index of the notes, once there are enough to need one
-    └── <Topic>/
-        └── <Note Title>.md
+│       ├── <Document Title>.pdf            # the signed copy
+│       └── <Other Document Title>.md       # a set signed together shares the folder
+└── Archive/
+    ├── Superseded Drafts/      # drafts that were never executed
+    │   └── <Matter> <YYYY-MM-DD> (Superseded)/
+    │       └── <Document Title>.md
+    └── Legacy and Reference/   # older versions, source and reference agreements
 ```
 
 Every operative document lives in its own dated folder. Never leave one loose in a state folder. One folder can hold a set drafted, executed, or superseded together (an operating agreement and the asset assignment signed with it), in which case the folder is the set and each file is one document.
@@ -51,7 +48,7 @@ Create a folder when it holds a real document. Do not pre-create empty buckets o
 
 ## Naming
 
-- Use ISO dates, `YYYY-MM-DD`, in every filename. They sort chronologically and never read ambiguously across regions. Do not use `M.D.YYYY` or written-out months.
+- Use ISO dates, `YYYY-MM-DD`, wherever a folder or file name carries a date. They sort chronologically and never read ambiguously across regions. Do not use `M.D.YYYY` or written-out months.
 - The version lives on the folder: `<Matter or Set> <YYYY-MM-DD> (<Status>)/`. The document file inside is named by its title only, `<Document Title>.md`, with no date or status, which keeps its filename clean for export and signing. The date is that version's date, the draft or execution date, not today's date.
 - Status markers are a closed set, each mapping to one lifecycle point: `(Draft)` early working text, `(Redline)` a marked-up comparison against the controlling version, `(Unsigned)` final text circulated for signature, `(Executed)` signed and in force, `(Superseded)` replaced by a later version. A signed baseline folder may use `Baseline` in place of `(Executed)`. The folder date plus a marker replaces free-text version words. Do not name a folder `Final`, `Revised`, or `Re-Revised`. Those do not scale and stop being true the moment the next version exists.
 - Title Case for folder names and document filenames.
@@ -60,24 +57,23 @@ Create a folder when it holds a real document. Do not pre-create empty buckets o
 ## Keep Metadata Out Of The Document Body
 
 - Operative documents are export-and-sign artifacts. Do not put YAML frontmatter, agent notes, version tags, or process labels inside an agreement body. They leak into the exported, printed, or signed copy. The version and status live on the folder, never in the file.
-- Internal strategy, the reasons behind a deal, negotiation playbooks, and enforceability reasoning live only in `Notes/`, clearly marked as internal and never shared with another party. Keep them out of any document or note that could be sent.
+- Internal strategy, the reasons behind a deal, negotiation playbooks, and enforceability reasoning live only in internal notes, clearly marked as internal and never shared with another party. Keep them out of any document or note that could be sent.
 
-## Notes And Logs
+## Internal Notes
 
-- `Notes/` files are internal working material. Organize them in topic folders by matter, never loose at the `Notes/` root, and group related materials together: a transcript and the screenshot or recording it came from belong in one folder, not scattered next to unrelated notes.
-- Give each markdown note YAML frontmatter with four fields: `name` (Title Case), `description` (one line saying what the note holds and when it is useful), `date_created`, and `date_modified` (`YYYY-MM-DD`). Keep `date_created` fixed and bump `date_modified` when the content changes. If a note is missing frontmatter, add it, reading the dates from git or the filesystem. Notes are the only files that carry frontmatter.
-- One current fact has one owner note. Other notes link to it rather than restating it.
-- A negotiation or meeting log only gains entries, each one dated. When older entries are no longer reached for, move them to `Archive/Notes/` in files named for the period they cover, leave a line in the log saying where they went, and never summarize an entry away.
-- Once `Notes/` holds more notes than are worth opening one by one, keep a generated index in `Notes/AGENTS.md`, one line per note with its `description`, regenerated from the frontmatter whenever notes change. Index notes only.
-- Run a consolidation pass over `Notes/` when a negotiation closes, when a phase of the matter ends, and when asked to tidy: merge duplicate negotiation notes, retire strategy that no longer applies to `Archive/Notes/`, and resolve notes that disagree. The pass never touches operative documents. Each executed document stands alone.
+Review notes, negotiation notes, call transcripts, and message drafts are project knowledge, not legal documents. They live outside this tree, in the project's `Context/` directory, in a folder named for the matter, and the context-memory skill governs how they are written, indexed, and archived: [![context-memory on RemoteSkill](https://remoteskill.md/context-memory-V1EeZf7zmcow/badge.svg)](https://remoteskill.md/context-memory-V1EeZf7zmcow). A repository that holds only legal documents keeps that `Context/` at its root, beside `Active/`.
+
+A `Notes/` folder already sitting among the legal folders stays where it is until it is moved on purpose, in one change that carries every note across whole and retargets every link to it. Never delete it or leave it half moved.
+
+Tidying or consolidating notes never touches an operative document. Each executed document stands alone.
 
 ## Inbox
 
-`Inbox/` holds what arrives from outside: a counterparty's draft or redline, a transcript, a scan of a signed page. Track it in git and never ignore it, because a received version is evidence of what was sent and when. File each item, then leave the inbox empty. A received draft goes to its own dated folder in `Active/` under the status it arrived in, a signed copy goes beside its document in `Executed/`, and a transcript or scan goes to its topic folder in `Notes/`. Move the file as received. When an editable Markdown version is needed, put it beside the original rather than in its place.
+`Inbox/` holds what arrives from another party: a draft or redline, a signed page, a scan of either. Track it in git and never ignore it, because a received version is evidence of what was sent and when. File each item, then leave the inbox empty. A received draft goes to its own dated folder in `Active/` under the status it arrived in, and a signed copy goes beside its document in `Executed/`. A transcript or recording of a conversation is a note, not a received document, and is filed with the notes. Move the file as received. When an editable Markdown version is needed, put it beside the original rather than in its place.
 
 ## Archive
 
-`Archive/` at the repository root is the only archive. Superseded drafts, legacy and reference agreements, retired notes, and older log entries all move into it. Archiving is relocation, not rewrite: a file moves whole and unedited. Delete almost nothing. A superseded version, a received draft, or a duplicate signed copy may be evidence.
+`Archive/` at the repository root is the only archive for legal documents. Superseded drafts and legacy and reference agreements move into it. Archiving is relocation, not rewrite: a file moves whole and unedited. Delete almost nothing. A superseded version, a received draft, or a duplicate signed copy may be evidence.
 
 ## Document Anatomy
 
@@ -91,7 +87,7 @@ For agreements and similar instruments, hold to these:
 - `shall` obligates, `may` permits, `will` states a future fact. Do not mix them loosely.
 - Explicit placeholders for the effective date and any unknown dates, addresses, or amounts, written so they cannot be missed at signing.
 - For fields an e-signature tool will fill, the signatures and the signed dates, leave a bare blank the tool can replace, with no pre-filled month or year, so it can place its field cleanly.
-- Use heading levels for the document hierarchy (title, party block, articles, sections), not bold text, so the markdown stays valid and converts cleanly.
+- Use heading levels for the title, the party block, the articles, and any section that has a title of its own, not bold text, so the markdown stays valid and converts cleanly. A section with no title is a paragraph that opens with its number.
 - Make every fill-in blank long enough to write on or print.
 
 ## Review And Redline
@@ -111,6 +107,15 @@ Keep advice in plain language, propose specific replacement wording rather than 
 ## Export And Signing
 
 - The markdown file is the source of truth. When a document is exported to another format for signing, a shared doc or a PDF, record that the export exists and which file it came from. Do not let an export silently diverge from its source. A round trip through another editor degrades formatting and can drop content, so the markdown stays canonical.
+- Make the signing PDF with the [export script](scripts/export.mjs), which sets every document in one typeface and layout. Do not hand-build the HTML, restyle one matter, or use a general Markdown converter, where a numbered list can be renumbered, a run of underscores can become emphasis so a signature line prints short, and a signature block can break across two pages. The script writes the HTML and the PDF beside the Markdown, leaves the Markdown untouched, and prints JSON with the page count and any `warnings`. Add `--paper a4` for A4.
+
+  ```bash
+  npx --yes github:LeeorNahum/legal-repository-opinions-skill "<Document Title>.md"
+  node <skill-root>/scripts/export.mjs "<Document Title>.md"
+  ```
+
+- Write the Markdown in the shapes the script reads, which `--help` lists in full. Each section is its own paragraph, or its own heading, opening with its number (`3.2`, `4.1.2`), and each lettered item its own paragraph opening with `(a)`. An article is a heading opening with `ARTICLE 3`. A schedule or exhibit is a heading opening with `Schedule A` or `Exhibit B`, and it starts a new page. Each signing line, such as `Signature:` followed by its blank, is its own paragraph under the signer's heading. Do not open an ordinary paragraph with a decimal amount, because one that fits the numbering is set as a section.
+- Both files are generated. Change the Markdown and export again, never the HTML or the PDF. The signed PDF in `Executed/` is not an export, and the script refuses to write there. Before the PDF goes to anyone, read the `warnings`, then the PDF itself: the page count, where each page ends, and the signature page.
 - Fill the effective date at signing, or state that the document is effective on a named event, rather than leaving the date implied.
 - Once every party has signed, save the executed copy to `Executed/` with `(Executed)` and the execution date, and stop editing it.
 
@@ -126,7 +131,7 @@ When a party leaves, an entity dissolves, or an agreement is unwound:
 
 ## Legal Repository Audit
 
-When invoked to audit a legal repository, walk it against every section above: the recorded controlling version, immutable executed files, folder and file naming, frontmatter on notes only, one archive, an empty inbox, document anatomy, and exports that match their source. Diff the active draft against the controlling baseline as Review And Redline describes.
+When invoked to audit a legal repository, walk it against every section above: the recorded controlling version, immutable executed files, folder and file naming, no frontmatter or other metadata in any operative document, no internal reasoning in anything that could be sent, one archive for legal documents, an empty inbox, document anatomy, and exports that match their source. Diff the active draft against the controlling baseline as Review And Redline describes.
 
 Report as a Markdown table with one row per finding and columns for document, category, and finding. Never paste a party's private contact details or signature image into the report.
 

@@ -1,0 +1,15 @@
+{
+  "name": "legal-repository-opinions",
+  "version": "2.0.0",
+  "description": "Exports an agreement's Markdown to a typeset HTML file and a signing PDF.",
+  "type": "module",
+  "bin": {
+    "legal-repository-opinions": "scripts/export.mjs"
+  },
+  "files": [
+    "scripts/export.mjs"
+  ],
+  "engines": {
+    "node": ">=18.3"
+  }
+}
