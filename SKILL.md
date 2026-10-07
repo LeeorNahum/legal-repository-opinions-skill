@@ -4,7 +4,7 @@ description: "Use when creating, drafting, redlining, reviewing, exporting, sign
 compatibility: "The bundled export script requires Node.js 18.3 or later and an installed Chrome, Edge, or Chromium at version 131 or later."
 metadata:
   author: "Leeor Nahum"
-  version: "2.0.0"
+  version: "2.0.1"
 ---
 
 # Legal Repository Opinions

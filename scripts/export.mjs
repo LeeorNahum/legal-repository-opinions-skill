@@ -711,6 +711,8 @@ pre { white-space: pre-wrap; margin: 0 0 8pt; }
 .sigblock { margin: 0 0 18pt; }
 .signer { margin: 12pt 0 4pt; }
 .sigline { margin: 0; padding-top: 15pt; }
+/* The first line under a signer is the one signed, so it gets room for an e-signature field. */
+.signer + .sigline, .sigblock > .sigline:first-child { padding-top: 34pt; }
 .sigline .lbl { display: inline-block; min-width: 1.1in; }
 .blank.line { width: 3.25in; }
 `;
