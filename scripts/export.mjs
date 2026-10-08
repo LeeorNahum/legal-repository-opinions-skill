@@ -40,8 +40,9 @@ What the Markdown may contain:
              first number as the section or ARTICLE before it, or the next one.
              Any other paragraph that opens with a decimal stays a paragraph
              and is named in "warnings".
-  Items      A paragraph that opens with (a), (ii), or (3) is set like a
-             sub-section. A recital letter such as A. and a numbered list item
+  Items      A paragraph that opens with (a), (ii), or (3) opens half an inch
+             in and hangs: its wrapped lines align under the first word after
+             the marker. A recital letter such as A. and a numbered list item
              are set like a section, with the number as typed. Bullets hang.
   Headings   The first top-level heading is the title, centered. Headings
              directly under it are subtitles, centered too, when a horizontal
@@ -463,7 +464,9 @@ function renderPara(block, state) {
   }
   const item = ENUM_MARKER.exec(raw);
   if (item && Boolean(item[1]) === Boolean(item[4])) {
-    return `<p class="sec enum"><span class="num">${escapeHtml(item[2])}</span>${renderInline(raw.slice(item[0].length))}</p>`;
+    // The text is its own box beside the marker, so every wrapped line starts
+    // under the first word whatever the width of the marker.
+    return `<p class="sec enum"><span class="num">${escapeHtml(item[2])}</span><span class="txt">${renderInline(raw.slice(item[0].length))}</span></p>`;
   }
   const recital = RECITAL_LETTER.exec(raw);
   if (recital) {
@@ -472,8 +475,8 @@ function renderPara(block, state) {
   return `<p>${renderInline(raw)}</p>`;
 }
 
-// A numbered list item is set like a section, with the number as typed. Only
-// bullets hang.
+// A numbered list item is set like a section, with the number as typed. Of
+// list items, only bullets hang.
 function renderItem(block) {
   const text = renderInline(joinLines(block.lines));
   if (block.marker) return `<p class="sec o${block.depth}"><span class="num">${escapeHtml(block.marker)}</span>${text}</p>`;
@@ -692,9 +695,12 @@ h1, h2, h3, h4, h5, h6 { font-size: 12pt; line-height: 1.25; margin: 14pt 0 6pt;
 .attachment, .newpage { break-before: page; }
 .numbered { margin: 12pt 0 4pt; }
 .num { margin-right: 0.75em; font-variant-numeric: lining-nums tabular-nums; }
-.s3, .enum, .o1 { text-indent: 0.5in; }
+.s3, .o1 { text-indent: 0.5in; }
 .s4, .o2 { text-indent: 1in; }
 .s5, .o3 { text-indent: 1.5in; }
+.enum { display: flex; margin-left: 0.5in; }
+.enum .num { flex: none; box-sizing: border-box; min-width: 0.35in; margin-right: 0; padding-right: 0.5em; }
+.enum .txt { flex: 1; min-width: 0; }
 .item { padding-left: 0.35in; text-indent: -0.35in; }
 .item .num { display: inline-block; min-width: 0.35in; margin-right: 0; text-indent: 0; font-weight: 400; }
 .item.d1 { padding-left: 0.7in; }
